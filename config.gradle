@@ -1,0 +1,8 @@
+ext{
+    butterknife_VERSION = '8.8.0'
+
+    dependencies=[
+            "butterknife": "com.jakewharton:butterknife:${butterknife_VERSION}"
+//            "butterknife": "com.jakewharton:butterknife:8.8.0"
+            ]
+}
