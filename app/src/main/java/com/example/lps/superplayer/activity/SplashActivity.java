@@ -1,6 +1,7 @@
 package com.example.lps.superplayer.activity;
 
 import android.animation.Animator;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,7 +27,11 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        ObjectAnimator mAnimator = ObjectAnimator.ofFloat(mRootview, "alpha", 0.4f, 1.0f);
+        ObjectAnimator mAnimatorAlpha = ObjectAnimator.ofFloat(mRootview, "alpha", 0.1f, 1.0f);
+        ObjectAnimator mAnimatorScaleX = ObjectAnimator.ofFloat(mRootview, "scaleX", 0.7f, 1.2f);
+        ObjectAnimator mAnimatorScaleY= ObjectAnimator.ofFloat(mRootview, "scaleY", 0.7f, 1.2f);
+        AnimatorSet mAnimator=new AnimatorSet();
+        mAnimator.play(mAnimatorAlpha).with(mAnimatorScaleX).with(mAnimatorScaleY);
         mAnimator.setDuration(2000);
         mAnimator.start();
         mAnimator.addListener(new Animator.AnimatorListener() {
