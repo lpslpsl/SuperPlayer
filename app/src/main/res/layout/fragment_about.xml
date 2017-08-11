@@ -1,13 +1,64 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="com.example.lps.superplayer.fragment.AboutFragment">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="com.example.lps.superplayer.fragment.AboutFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:src="@drawable/ic_launcher"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="V1.0.0"
+            android:id="@+id/tv_version"
+            android:layout_margin="10dp"
+            android:textSize="30sp"
+            />
+    </LinearLayout>
+
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"/>
+        android:layout_height="wrap_content"
+        android:text="应用介绍与帮助"
+        android:textColor="@color/colorPrimary"
+        android:layout_margin="15dp"
+        android:textSize="25sp"
+        />
 
-</FrameLayout>
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:contentPadding="10dp"
+        app:cardElevation="5dp"
+        android:layout_margin="10dp"
+        app:cardCornerRadius="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:text="作者：lps\n项目地址：https://github.com/lpslpsl/SuperPlayer
+\n练手项目。\n
+1.聚合海量视频。视频来源于搜狐，乐视\n
+2.基于IjkPlayer，解码支持RMVB，MKV，WMA，MP4。。等主流格式\n
+3.直播央视高清节目"
+            android:textSize="16sp"
+            />
+
+    </android.support.v7.widget.CardView>
+</LinearLayout>

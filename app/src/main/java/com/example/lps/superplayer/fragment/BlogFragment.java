@@ -4,6 +4,7 @@ package com.example.lps.superplayer.fragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.ContentLoadingProgressBar;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,29 +38,43 @@ public class BlogFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View mview = inflater.inflate(R.layout.fragment_blog, container, false);
-unbinder= ButterKnife.bind(this,mview);
+        unbinder = ButterKnife.bind(this, mview);
         initview();
-return mview;
+        return mview;
     }
 
     private void initview() {
         mWebview.loadUrl("http://www.jianshu.com/u/de410028efe2");
-        mWebview.setWebChromeClient(new WebChromeClient(){
+        mWebview.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 mProgressbar.setProgress(newProgress);
-                if (newProgress==100){
+                if (newProgress == 100) {
                     mProgressbar.setVisibility(View.GONE);
                 }
                 super.onProgressChanged(view, newProgress);
             }
         });
         mWebview.getSettings().setJavaScriptEnabled(true);
-        mWebview.setWebViewClient(new WebViewClient(){
+        mWebview.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
                 return true;
+            }
+        });
+        /**
+         * 让webView可以返回上一个页面。而不是直接退出
+         * 在Activity可以重写onkeyDown实现
+         */
+        mWebview.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode==KeyEvent.KEYCODE_BACK&&mWebview.canGoBack()){
+                    mWebview.goBack();
+                    return true;
+                }
+                return false;
             }
         });
     }
@@ -79,4 +94,5 @@ return mview;
                 break;
         }
     }
+
 }
