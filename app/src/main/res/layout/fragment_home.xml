@@ -1,13 +1,24 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              tools:context="com.example.lps.superplayer.fragment.HomeFragment">
+<!--轮播-->
+    <FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="200dp">
+<com.hejunlin.superindicatorlibray.LoopViewPager
+    android:layout_width="match_parent"
+    android:id="@+id/loopviewpager"
+    android:layout_height="match_parent"/>
+    <com.hejunlin.superindicatorlibray.CircleIndicator
+        android:layout_gravity="bottom|right"
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/indicator"
+        android:layout_height="48dp">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"/>
+    </com.hejunlin.superindicatorlibray.CircleIndicator>
+    </FrameLayout>
 
-</FrameLayout>
+</LinearLayout>

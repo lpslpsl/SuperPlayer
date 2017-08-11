@@ -8,6 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.lps.superplayer.R;
+import com.example.lps.superplayer.adapter.HomePicAdapter;
+import com.hejunlin.superindicatorlibray.CircleIndicator;
+import com.hejunlin.superindicatorlibray.LoopViewPager;
+
+import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,16 +24,33 @@ import com.example.lps.superplayer.R;
 public class HomeFragment extends Fragment {
 
 
-    public HomeFragment() {
-        // Required empty public constructor
-    }
-
+    @BindView(R.id.loopviewpager)
+    LoopViewPager mLoopviewpager;
+    @BindView(R.id.indicator)
+    CircleIndicator mIndicator;
+    private View rootView;
+    private Unbinder unbinder;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+
+         rootView= inflater.inflate(R.layout.fragment_home, container, false);
+        unbinder = ButterKnife.bind(this, rootView);
+        initView();
+        return rootView;
     }
 
+    private void initView() {
+
+        mLoopviewpager.setAdapter(new HomePicAdapter(getActivity()));
+        mLoopviewpager.setLooperPic(true);
+        mIndicator.setViewPager(mLoopviewpager);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 }
