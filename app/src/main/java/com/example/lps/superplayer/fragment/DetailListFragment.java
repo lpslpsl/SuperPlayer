@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.example.lps.commonlib.listener.PullloadListener;
+import com.example.lps.commonlib.weight.PullloadRecyclerView;
 import com.example.lps.superplayer.R;
 import com.example.lps.superplayer.adapter.Detailadapter;
 
@@ -27,7 +29,7 @@ public static final String CHANNEL="channel";
 public static final String TITLE="title";
 
     @BindView(R.id.recyclerview)
-    RecyclerView mRecyclerView;
+    PullloadRecyclerView mRecyclerView;
     private View view;
     private Unbinder unbinder;
 
@@ -43,8 +45,19 @@ public static final String TITLE="title";
     }
 
     private void initview() {
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setGridLayout(3);
         mRecyclerView.setAdapter(new Detailadapter());
+        mRecyclerView.setPullloadListener(new PullloadListener() {
+            @Override
+            public void refresh() {
+
+            }
+
+            @Override
+            public void loadmore() {
+
+            }
+        });
     }
 
     private static final String TAG = "DetailListFragment";

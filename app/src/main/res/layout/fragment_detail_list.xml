@@ -3,11 +3,11 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              tools:context="com.example.lps.superplayer.fragment.DetailListFragment">
-<android.support.v7.widget.RecyclerView
+<com.example.lps.commonlib.weight.PullloadRecyclerView
     android:id="@+id/recyclerview"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</android.support.v7.widget.RecyclerView>
+</com.example.lps.commonlib.weight.PullloadRecyclerView>
 
 </FrameLayout>
