@@ -3,22 +3,20 @@ package com.example.lps.superplayer.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import com.example.lps.commonlib.listener.PullloadListener;
 import com.example.lps.commonlib.weight.PullloadRecyclerView;
 import com.example.lps.superplayer.R;
 import com.example.lps.superplayer.adapter.Detailadapter;
+import com.example.lps.superplayer.api.ApiCallBack;
+import com.example.lps.superplayer.api.SiteApi;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
@@ -26,13 +24,16 @@ import butterknife.Unbinder;
  */
 public class DetailListFragment extends Fragment {
 public static final String CHANNEL="channel";
-public static final String TITLE="title";
+public static final String CATEGARY ="categary";
 
     @BindView(R.id.recyclerview)
     PullloadRecyclerView mRecyclerView;
     private View view;
     private Unbinder unbinder;
-
+    SiteApi mSiteApi;
+    int page=1;
+    String mchannel;
+    String mcategray;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -62,8 +63,27 @@ public static final String TITLE="title";
 
     private static final String TAG = "DetailListFragment";
     private void initdata() {
-        String mchannel = getArguments().getString(CHANNEL);
+
+        mchannel = getArguments().getString(CHANNEL);
+        mcategray = getArguments().getString(CATEGARY);
+        mSiteApi = new SiteApi();
+        loadNetWorkData();
         Log.e(TAG, "initdata: "+mchannel );
+        Log.e(TAG, "initdata: "+mcategray );
+    }
+
+    private void loadNetWorkData( ) {
+        mSiteApi.onGetChannelAlbums(mchannel, page, new ApiCallBack() {
+            @Override
+            public void onsuccess() {
+
+            }
+
+            @Override
+            public void onFail() {
+
+            }
+        });
     }
 
     @Override

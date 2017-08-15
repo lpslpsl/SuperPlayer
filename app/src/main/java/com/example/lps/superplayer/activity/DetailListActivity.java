@@ -42,14 +42,14 @@ List<Fragment> mFragmentList;
         DetailListFragment mDetailListFragment=new DetailListFragment();
         Bundle mBundle=new Bundle();
         mBundle.putString(mDetailListFragment.CHANNEL,"letv");
-        mBundle.putString(mDetailListFragment.TITLE,title);
+        mBundle.putString(mDetailListFragment.CATEGARY,title);
         mDetailListFragment.setArguments(mBundle);
 
         mFragmentList.add(mDetailListFragment);
         DetailListFragment mDetailListFragment1=new DetailListFragment();
         Bundle mBundle1=new Bundle();
         mBundle1.putString(mDetailListFragment.CHANNEL,"souhu");
-        mBundle1.putString(mDetailListFragment.TITLE,title);
+        mBundle1.putString(mDetailListFragment.CATEGARY,title);
         mDetailListFragment1.setArguments(mBundle1);
 
         mFragmentList.add(mDetailListFragment1);
