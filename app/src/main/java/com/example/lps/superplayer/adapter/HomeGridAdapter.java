@@ -1,6 +1,7 @@
 package com.example.lps.superplayer.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.lps.superplayer.R;
+import com.example.lps.superplayer.activity.DetailListActivity;
 import com.example.lps.superplayer.model.Channel;
 
 import java.util.List;
@@ -77,6 +79,9 @@ public class HomeGridAdapter extends BaseAdapter {
                         break;
                     default:
                         // TODO: 2017/8/11 跳转到对应分类页面
+                        Intent mIntent=new Intent(mContext, DetailListActivity.class);
+                        mIntent.putExtra(DetailListActivity.TITLE,mChannelList.get(position).getChanlName());
+                        mContext.startActivity(mIntent);
                         break;
                 }
             }
