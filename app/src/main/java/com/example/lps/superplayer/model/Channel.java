@@ -33,7 +33,7 @@ public class Channel implements Parcelable {
     @LayoutRes
     int imgRes;
     String chanlName;
-    private int mChannelId;
+
 
     private int channelId;
 
@@ -41,7 +41,7 @@ public class Channel implements Parcelable {
     public Channel(int mImgRes, String mChanlName,int mChannelId) {
         imgRes = mImgRes;
         chanlName = mChanlName;
-        this.mChannelId = mChannelId;
+        this.channelId = mChannelId;
     }
 
     public int getImgRes() {
