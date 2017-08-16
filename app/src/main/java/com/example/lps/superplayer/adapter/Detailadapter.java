@@ -1,12 +1,19 @@
 package com.example.lps.superplayer.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.lps.superplayer.R;
+import com.example.lps.superplayer.model.Album;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,25 +28,45 @@ import butterknife.ButterKnife;
 
 
 public class Detailadapter extends RecyclerView.Adapter<Detailadapter.ViewHolder> {
+    List<Album> mAlbumList;
+    private Context mContext;
+
+    public Detailadapter(List<Album> mAlbumList) {
+        this.mAlbumList = mAlbumList;
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        mContext = parent.getContext();
         View mView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_detail, null);
         return new ViewHolder(mView);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
+        Album data = mAlbumList.get(position);
+        holder.mTitle.setText(data.getTitle());
+        Glide.with(mContext).load(data.getHorImgUrl()).into(holder.mImageView);
+        holder.mSubtitle.setText(data.getAlbumDesc());
     }
 
     @Override
     public int getItemCount() {
-        return 50;
+        return mAlbumList==null?0: mAlbumList.size();
+    }
+
+    public void setData(List<Album> mData) {
+        mAlbumList = mData;
+        notifyDataSetChanged();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.title)
         TextView mTitle;
+        @BindView(R.id.conver)
+        ImageView mImageView;
+        @BindView(R.id.subtitle)
+                TextView mSubtitle;
 
         ViewHolder(View view) {
             super(view);

@@ -14,6 +14,11 @@ import com.example.lps.superplayer.R;
 import com.example.lps.superplayer.adapter.Detailadapter;
 import com.example.lps.superplayer.api.ApiCallBack;
 import com.example.lps.superplayer.api.SiteApi;
+import com.example.lps.superplayer.model.Album;
+import com.example.lps.superplayer.model.Channel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,22 +28,27 @@ import butterknife.Unbinder;
  * A simple {@link Fragment} subclass.
  */
 public class DetailListFragment extends Fragment {
-public static final String CHANNEL="channel";
-public static final String CATEGARY ="categary";
+    public static final String CHANNEL = "channel";
+
 
     @BindView(R.id.recyclerview)
     PullloadRecyclerView mRecyclerView;
     private View view;
     private Unbinder unbinder;
     SiteApi mSiteApi;
-    int page=1;
-    String mchannel;
-    String mcategray;
+    int page = 1;
+    int msiteId;
+
+    Channel mchannel;
+    public static final String SITE_ID = "site_id";
+    Detailadapter mAdapter;
+    List<Album> mAlbumList;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        view=inflater.inflate(R.layout.fragment_detail_list, container, false);
+        view = inflater.inflate(R.layout.fragment_detail_list, container, false);
         unbinder = ButterKnife.bind(this, view);
         initview();
         initdata();
@@ -46,37 +56,43 @@ public static final String CATEGARY ="categary";
     }
 
     private void initview() {
+        mAlbumList = new ArrayList<>();
         mRecyclerView.setGridLayout(3);
-        mRecyclerView.setAdapter(new Detailadapter());
+        mAdapter = new Detailadapter(mAlbumList);
+        mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setPullloadListener(new PullloadListener() {
             @Override
             public void refresh() {
-
+                mAlbumList.clear();
             }
 
             @Override
             public void loadmore() {
-
+                page++;
+                loadNetWorkData(page);
             }
         });
     }
 
     private static final String TAG = "DetailListFragment";
+
     private void initdata() {
 
-        mchannel = getArguments().getString(CHANNEL);
-        mcategray = getArguments().getString(CATEGARY);
+        mchannel = getArguments().getParcelable(CHANNEL);
+        msiteId = getArguments().getInt(SITE_ID);
         mSiteApi = new SiteApi();
-        loadNetWorkData();
-        Log.e(TAG, "initdata: "+mchannel );
-        Log.e(TAG, "initdata: "+mcategray );
+        loadNetWorkData(page);
+        Log.e(TAG, "initdata: " + mchannel);
     }
 
-    private void loadNetWorkData( ) {
-        mSiteApi.onGetChannelAlbums(mchannel, page, new ApiCallBack() {
-            @Override
-            public void onsuccess() {
+    private void loadNetWorkData(int mPage) {
+        mSiteApi.onGetChannelAlbums(msiteId, mchannel, mPage, new ApiCallBack<List<Album>>() {
 
+
+            @Override
+            public void onsuccess(List<Album> data) {
+                mAlbumList.addAll(data);
+                mAdapter.notifyDataSetChanged();
             }
 
             @Override

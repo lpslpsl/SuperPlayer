@@ -1,5 +1,7 @@
 package com.example.lps.superplayer.api;
 
+import com.example.lps.superplayer.model.Channel;
+
 /**
  * Created by lps on 2017/8/15.
  *
@@ -10,5 +12,5 @@ package com.example.lps.superplayer.api;
 
 
 public abstract class BaseSiteApi {
-  abstract   void onGetChannelAlbums(String channel,int page,int pagecount,ApiCallBack mCallBack);
+  abstract   void onGetChannelAlbums(Channel channel, int page, int pagecount, ApiCallBack mCallBack);
 }
