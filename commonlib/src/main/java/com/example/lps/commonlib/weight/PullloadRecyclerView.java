@@ -109,7 +109,7 @@ public class PullloadRecyclerView extends LinearLayout {
      * 刷新
      */
     private void refreshData() {
-        // TODO: 2017/8/15
+
         isRefresh=true;
         if (mPullloadListener != null) {
             mPullloadListener.refresh();
@@ -134,9 +134,8 @@ public class PullloadRecyclerView extends LinearLayout {
      * 加载更多
      */
     private void loadMoreData() {
-        // TODO: 2017/8/15
+
         isLoadMore = true;
-        mSwipeRefreshLayout.setRefreshing(false);
         mFooterView.animate().translationY(0).setInterpolator(new AccelerateDecelerateInterpolator())
                 .setDuration(300)
                 .setListener(new AnimatorListenerAdapter() {
@@ -209,18 +208,15 @@ public class PullloadRecyclerView extends LinearLayout {
                 lastitem = findMax(lastPositions);
                 firstitem = mStaggeredGridLayoutManager.findFirstVisibleItemPositions(lastPositions)[0];
             }
-            // TODO: 2017/8/15  其他类型manager处理
-            if (mSwipeRefreshLayout.isEnabled()) {
-                mSwipeRefreshLayout.setEnabled(true);
-            } else {
-                mSwipeRefreshLayout.setEnabled(false);
-            }
             if (!isLoadMore &&
                     totalcount-1 == lastitem
                     && !isRefresh
                     && mSwipeRefreshLayout.isEnabled()
                     && (dx > 0 || dy > 0)) {
+                mSwipeRefreshLayout.setEnabled(false);
                 loadMoreData();
+            }else {
+                mSwipeRefreshLayout.setEnabled(true);
             }
         }
 
