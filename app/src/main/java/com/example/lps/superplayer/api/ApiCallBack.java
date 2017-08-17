@@ -11,5 +11,5 @@ package com.example.lps.superplayer.api;
 
 public interface ApiCallBack<T> {
     void onsuccess(T data);
-    void onFail();
+    void onFail(Exception mE);
 }

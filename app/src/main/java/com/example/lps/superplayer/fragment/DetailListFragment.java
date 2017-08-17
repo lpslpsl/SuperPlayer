@@ -96,7 +96,7 @@ public class DetailListFragment extends Fragment {
             }
 
             @Override
-            public void onFail() {
+            public void onFail(Exception mE) {
 
             }
         });

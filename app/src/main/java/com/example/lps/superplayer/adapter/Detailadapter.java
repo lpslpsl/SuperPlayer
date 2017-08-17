@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.lps.superplayer.R;
 import com.example.lps.superplayer.model.Album;
+import com.example.lps.superplayer.model.Site;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +49,12 @@ public class Detailadapter extends RecyclerView.Adapter<Detailadapter.ViewHolder
         holder.mTitle.setText(data.getTitle());
         Glide.with(mContext).load(data.getHorImgUrl()).into(holder.mImageView);
         holder.mSubtitle.setText(data.getAlbumDesc());
+if (data.getSite().getSiteId()== Site.SOHU) {
+    holder.mUpdated.setText(data.getTip());
+    holder.mUpdated.setVisibility(View.VISIBLE);
+}else {
+    holder.mUpdated.setVisibility(View.GONE);
+}
     }
 
     @Override
@@ -67,6 +74,8 @@ public class Detailadapter extends RecyclerView.Adapter<Detailadapter.ViewHolder
         ImageView mImageView;
         @BindView(R.id.subtitle)
                 TextView mSubtitle;
+        @BindView(R.id.updated)
+                TextView mUpdated;
 
         ViewHolder(View view) {
             super(view);
