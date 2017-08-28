@@ -1,4 +1,6 @@
-package com.example.lps.superplayer.viewpagerindicator;
+package com.example.lps.superplayer.viewpagerindicator.indicator;
+
+import com.example.lps.superplayer.viewpagerindicator.IPagerChangeListener;
 
 /**
  * Created by lps on 2017/8/17.

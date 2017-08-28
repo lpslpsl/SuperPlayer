@@ -17,7 +17,7 @@ import com.example.lps.superplayer.model.Channel;
 import com.example.lps.superplayer.model.Site;
 import com.example.lps.superplayer.viewpagerindicator.CoolIndicatorLayout;
 import com.example.lps.superplayer.viewpagerindicator.ViewPagerIndicatorAdapter;
-import com.example.lps.superplayer.viewpagerindicator.ViewPagerIndicatorLayout;
+import com.example.lps.superplayer.viewpagerindicator.indicator.ViewPagerIndicatorLayout;
 import com.example.lps.superplayer.viewpagerindicator.ViewpagerWrapper;
 import com.example.lps.superplayer.viewpagerindicator.indicator.IPagerIndicatorView;
 import com.example.lps.superplayer.viewpagerindicator.indicator.ViewPagerIndicatorView;

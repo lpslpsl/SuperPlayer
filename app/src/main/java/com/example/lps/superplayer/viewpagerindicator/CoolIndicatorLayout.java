@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import com.example.lps.superplayer.viewpagerindicator.indicator.IPagerIndicatorLayout;
+
 /**
  * Created by lps on 2017/8/21.
  *

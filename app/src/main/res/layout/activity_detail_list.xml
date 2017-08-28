@@ -16,6 +16,7 @@
         >
 
     </com.example.lps.superplayer.viewpagerindicator.CoolIndicatorLayout>
+
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"

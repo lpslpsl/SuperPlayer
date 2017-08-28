@@ -1,4 +1,4 @@
-package com.example.lps.superplayer.viewpagerindicator;
+package com.example.lps.superplayer.viewpagerindicator.indicator;
 
 import android.support.v4.view.ViewPager;
 import android.util.SparseArray;

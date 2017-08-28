@@ -1,12 +1,9 @@
-package com.example.lps.superplayer.viewpagerindicator;
+package com.example.lps.superplayer.viewpagerindicator.indicator;
 
 import android.content.Context;
 import android.database.DataSetObserver;
-import android.icu.util.ValueIterator;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
-import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -14,7 +11,8 @@ import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 import com.example.lps.superplayer.R;
-import com.example.lps.superplayer.viewpagerindicator.indicator.IPagerIndicatorView;
+import com.example.lps.superplayer.viewpagerindicator.PositionData;
+import com.example.lps.superplayer.viewpagerindicator.ViewPagerIndicatorAdapter;
 import com.example.lps.superplayer.viewpagerindicator.title.IPagerTitle;
 import com.example.lps.superplayer.viewpagerindicator.title.IViewPagerTitleView;
 import com.example.lps.superplayer.viewpagerindicator.title.ViewPagerTitle;
