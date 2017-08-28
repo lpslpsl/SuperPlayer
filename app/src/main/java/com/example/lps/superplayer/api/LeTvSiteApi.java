@@ -106,7 +106,7 @@ public class LeTvSiteApi extends BaseSiteApi {
     private String getChannelAlbumUrl(Channel channel, int pageNo, int pageSize) {
         if (channel.getChannelId() == Channel.DOCUMENTRY) {
             return String.format(ALBUM_LIST_URL_DOCUMENTARY_FORMAT, conVertChannleId(channel), pageNo, pageSize);
-        } else if (channel.getChannelId() == Channel.DOCUMENTRY) {
+        } else if (channel.getChannelId() == Channel.SHOW) {
             return String.format(ALBUM_LIST_URL_SHOW_FORMAT, conVertChannleId(channel), pageNo, pageSize);
         }
         return String.format(ALBUM_LIST_URL_FORMAT, conVertChannleId(channel), pageNo, pageSize);

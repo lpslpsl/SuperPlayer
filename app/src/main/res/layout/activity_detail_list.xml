@@ -8,6 +8,14 @@
     android:orientation="vertical"
     tools:context="com.example.lps.superplayer.activity.DetailListActivity">
 <include layout="@layout/top_toolbar"/>
+    <com.example.lps.superplayer.viewpagerindicator.CoolIndicatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:id="@+id/cool_indicator_layout"
+        >
+
+    </com.example.lps.superplayer.viewpagerindicator.CoolIndicatorLayout>
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
