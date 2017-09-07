@@ -1,5 +1,7 @@
 package com.example.lps.superplayer.model;
 
+import java.io.Serializable;
+
 /**
  * Created by lps on 2017/8/15.
  *
@@ -9,7 +11,7 @@ package com.example.lps.superplayer.model;
  */
 
 
-public class Album {
+public class Album implements Serializable {
     private String albumId;//专辑id
     private int videoTotal;//集数
     private String title;//专辑名称

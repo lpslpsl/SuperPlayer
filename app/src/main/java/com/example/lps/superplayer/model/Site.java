@@ -1,5 +1,7 @@
 package com.example.lps.superplayer.model;
 
+import java.io.Serializable;
+
 /**
  * Created by lps on 2017/8/16.
  *
@@ -9,7 +11,7 @@ package com.example.lps.superplayer.model;
  */
 
 
-public class Site {
+public class Site implements Serializable{
     public static final int SOHU = 1;
     public static final int LETV = 2;
 

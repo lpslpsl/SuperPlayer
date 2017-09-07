@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -44,22 +45,30 @@ public class Detailadapter extends RecyclerView.Adapter<Detailadapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        Album data = mAlbumList.get(position);
+    public void onBindViewHolder(ViewHolder holder, final int position) {
+        final Album data = mAlbumList.get(position);
         holder.mTitle.setText(data.getTitle());
         Glide.with(mContext).load(data.getHorImgUrl()).into(holder.mImageView);
         holder.mSubtitle.setText(data.getAlbumDesc());
-if (data.getSite().getSiteId()== Site.SOHU) {
-    holder.mUpdated.setText(data.getTip());
-    holder.mUpdated.setVisibility(View.VISIBLE);
-}else {
-    holder.mUpdated.setVisibility(View.GONE);
-}
+        if (data.getSite().getSiteId() == Site.SOHU) {
+            holder.mUpdated.setText(data.getTip());
+            holder.mUpdated.setVisibility(View.VISIBLE);
+        } else {
+            holder.mUpdated.setVisibility(View.GONE);
+        }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener!=null){
+                    mListener.click(position);
+                }
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return mAlbumList==null?0: mAlbumList.size();
+        return mAlbumList == null ? 0 : mAlbumList.size();
     }
 
     public void setData(List<Album> mData) {
@@ -73,13 +82,22 @@ if (data.getSite().getSiteId()== Site.SOHU) {
         @BindView(R.id.conver)
         ImageView mImageView;
         @BindView(R.id.subtitle)
-                TextView mSubtitle;
+        TextView mSubtitle;
         @BindView(R.id.updated)
-                TextView mUpdated;
+        TextView mUpdated;
 
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }
     }
+OnItemClickListener mListener;
+
+    public void setListener(OnItemClickListener mListener) {
+        this.mListener = mListener;
+    }
+
+    public  interface OnItemClickListener{
+     void click(int position);
+ }
 }

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.example.lps.commonlib.listener.PullloadListener;
 import com.example.lps.commonlib.weight.PullloadRecyclerView;
 import com.example.lps.superplayer.R;
+import com.example.lps.superplayer.activity.AblumDetailActivity;
 import com.example.lps.superplayer.adapter.Detailadapter;
 import com.example.lps.superplayer.api.ApiCallBack;
 import com.example.lps.superplayer.api.SiteApi;
@@ -72,6 +73,23 @@ public class DetailListFragment extends Fragment {
                 loadNetWorkData(page);
             }
         });
+      mAdapter.setListener(new Detailadapter.OnItemClickListener() {
+          @Override
+          public void click(int position) {
+//              纪录片，电影，综艺，音乐等作为一种（他们没有分集的）
+              if (mchannel.getChannelId()==Channel.DOCUMENTRY
+                      ||mchannel.getChannelId()==Channel.MOVIE
+                      ||mchannel.getChannelId()==Channel.VARIETY
+                      ||mchannel.getChannelId()==Channel.MUSIC){
+                  AblumDetailActivity.launch(getActivity(),mAlbumList.get(position),0,true);
+              }
+//              有分集的作为一类。传递的参数不太一样
+              else if (mchannel.getChannelId()==Channel.COMIC
+                      ||mchannel.getChannelId()==Channel.SHOW){
+                  AblumDetailActivity.launch(getActivity(),mAlbumList.get(position));
+              }
+          }
+      });
     }
 
     private static final String TAG = "DetailListFragment";
