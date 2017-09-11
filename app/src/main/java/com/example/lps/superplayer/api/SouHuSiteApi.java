@@ -4,6 +4,7 @@ import com.example.lps.superplayer.model.Album;
 import com.example.lps.superplayer.model.Channel;
 import com.example.lps.superplayer.model.Site;
 import com.example.lps.superplayer.model.souhu.SoHuAlbum;
+import com.example.lps.superplayer.model.souhu.SoHuAlbumDetail;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -52,6 +53,33 @@ public class SouHuSiteApi extends BaseSiteApi {
         doGetChannelAlbumsByUrl(url, mCallBack);
     }
 
+    @Override
+    public void onGetAlbumDetail(final Album mAlbum, final ApiCallBack mCallBack) {
+        String url = API_ALBUM_INFO + mAlbum.getAlbumId() + ".json?" + API_KEY;
+        OkHttpUtils.get().url(url)
+                .build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                mCallBack.onFail(e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                Gson mGson = new Gson();
+                SoHuAlbumDetail mSoHuAlbumDetail = mGson.fromJson(response, SoHuAlbumDetail.class);
+                if (mSoHuAlbumDetail.getData()!=null){
+                    if (mSoHuAlbumDetail.getData().getLatest_video_count()>0){
+                        mAlbum.setVideoTotal(mSoHuAlbumDetail.getData().getLatest_video_count());
+                    }else {
+                        mAlbum.setVideoTotal(mSoHuAlbumDetail.getData().getTotal_video_count());
+                    }
+
+                }
+                mCallBack.onsuccess(mAlbum);
+            }
+        });
+    }
+
     private void doGetChannelAlbumsByUrl(String mUrl, final ApiCallBack mCallBack) {
         OkHttpUtils.get()
                 .url(mUrl)
@@ -75,7 +103,7 @@ public class SouHuSiteApi extends BaseSiteApi {
                             mAlbum.setTip(data.getTip());
                             mAlbum.setTitle(data.getAlbum_name());
                             mAlbum.setDirector(data.getDirector());
-mAlbum.setHorImgUrl(data.getHor_big_pic());
+                            mAlbum.setHorImgUrl(data.getHor_big_pic());
                             mAlbumList.add(mAlbum);
                         }
                         mCallBack.onsuccess(mAlbumList);

@@ -71,6 +71,11 @@ public class LeTvSiteApi extends BaseSiteApi {
         doGetChannelAlbumsByUrl(url, mCallBack);
     }
 
+    @Override
+    public void onGetAlbumDetail(Album mAlbum, ApiCallBack mCallBack) {
+
+    }
+
     private void doGetChannelAlbumsByUrl(String mUrl, final ApiCallBack mCallBack) {
 
         OkHttpUtils.get()

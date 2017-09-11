@@ -1,5 +1,6 @@
 package com.example.lps.superplayer.api;
 
+import com.example.lps.superplayer.model.Album;
 import com.example.lps.superplayer.model.Channel;
 
 /**
@@ -13,4 +14,7 @@ import com.example.lps.superplayer.model.Channel;
 
 public abstract class BaseSiteApi {
   abstract   void onGetChannelAlbums(Channel channel, int page, int pagecount, ApiCallBack mCallBack);
+
+
+  public abstract void onGetAlbumDetail(Album mAlbum, ApiCallBack mCallBack);
 }

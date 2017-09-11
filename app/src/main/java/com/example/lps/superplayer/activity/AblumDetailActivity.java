@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -12,9 +13,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.lps.superplayer.R;
+import com.example.lps.superplayer.api.ApiCallBack;
+import com.example.lps.superplayer.api.SiteApi;
 import com.example.lps.superplayer.model.Album;
 
 //剧集的详情页
@@ -42,6 +46,7 @@ public class AblumDetailActivity extends BaseActivity implements View.OnClickLis
      * 高清
      */
     private Button mBtHigh;
+    boolean isFavor;
 
     @Override
     protected void initData() {
@@ -64,15 +69,27 @@ public class AblumDetailActivity extends BaseActivity implements View.OnClickLis
         } else {
             mActor.setVisibility(View.GONE);
         }
-        if (!TextUtils.isEmpty(mAlbum.getAlbumDesc())&&isShowDesc){
+        if (!TextUtils.isEmpty(mAlbum.getAlbumDesc()) && isShowDesc) {
             mTvAlbumDesc.setText(mAlbum.getAlbumDesc());
             mTvAlbumDesc.setVisibility(View.VISIBLE);
             mAlbumDescContainer.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             mAlbumDescContainer.setVisibility(View.GONE);
             mTvAlbumDesc.setVisibility(View.GONE);
         }
         Glide.with(this).load(mAlbum.getHorImgUrl()).into(mImgConver);
+
+        SiteApi.onGetAlbumDetail(mAlbum, new ApiCallBack<Album>(){
+            @Override
+            public void onsuccess(Album data) {
+
+            }
+
+            @Override
+            public void onFail(Exception mE) {
+
+            }
+        });
     }
 
     @Override
@@ -107,6 +124,21 @@ public class AblumDetailActivity extends BaseActivity implements View.OnClickLis
         mActivity.startActivity(mIntent);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.ablum_menu_detail, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem favirate = menu.findItem(R.id.action_favor_item);
+        MenuItem unfavirate = menu.findItem(R.id.action_unfavor_item);
+        favirate.setVisible(isFavor);
+        unfavirate.setVisible(!isFavor);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
     public static void launch(Activity mActivity, Album mAlbum, int videonum, boolean showdesc) {
         Intent mIntent = new Intent(mActivity, AblumDetailActivity.class);
         mIntent.putExtra("album", mAlbum);
@@ -118,9 +150,25 @@ public class AblumDetailActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            case R.id.action_favor_item:
+                if (isFavor) {
+                    isFavor=false;
+//                    todo 收藏状态存储
+                    invalidateOptionsMenu();
+                    Toast.makeText(this, "已取消收藏", Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            case R.id.action_unfavor_item:
+                if (!isFavor) {
+                    isFavor=true;
+                    invalidateOptionsMenu();
+                    Toast.makeText(this, "已收藏", Toast.LENGTH_SHORT).show();
+                }
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
