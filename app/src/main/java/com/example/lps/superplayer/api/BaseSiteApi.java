@@ -17,4 +17,7 @@ public abstract class BaseSiteApi {
 
 
   public abstract void onGetAlbumDetail(Album mAlbum, ApiCallBack mCallBack);
+  public abstract void ongetVideo(int mPagenum, Album mAlbum, ApiCallBack mCallBack);
+
+
 }

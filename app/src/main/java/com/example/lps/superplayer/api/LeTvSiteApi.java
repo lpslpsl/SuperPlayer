@@ -8,14 +8,12 @@ import com.example.lps.superplayer.model.Site;
 import com.example.lps.superplayer.model.letv.LeTvAlbum;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.Callback;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
-import okhttp3.Response;
 
 /**
  * Created by lps on 2017/8/15.
@@ -74,6 +72,11 @@ public class LeTvSiteApi extends BaseSiteApi {
     @Override
     public void onGetAlbumDetail(Album mAlbum, ApiCallBack mCallBack) {
 
+    }
+
+    @Override
+    public void ongetVideo(int mPagenum, Album mAlbum, ApiCallBack mCallBack) {
+int pagesize=20;
     }
 
     private void doGetChannelAlbumsByUrl(String mUrl, final ApiCallBack mCallBack) {

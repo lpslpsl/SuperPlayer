@@ -40,4 +40,15 @@ public class SiteApi {
                 break;
         }
     }
+
+    public static void ongetVideo(int mPagenum, Album mAlbum, ApiCallBack mApiCallBack) {
+        switch (mAlbum.getSite().getSiteId()){
+            case Site.LETV:
+                new LeTvSiteApi().ongetVideo(mPagenum,mAlbum,mApiCallBack);
+                break;
+            case Site.SOHU:
+                new SouHuSiteApi().ongetVideo(mPagenum,mAlbum,mApiCallBack);
+                break;
+        }
+    }
 }

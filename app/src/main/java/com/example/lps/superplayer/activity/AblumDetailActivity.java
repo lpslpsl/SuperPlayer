@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,10 +20,12 @@ import com.bumptech.glide.Glide;
 import com.example.lps.superplayer.R;
 import com.example.lps.superplayer.api.ApiCallBack;
 import com.example.lps.superplayer.api.SiteApi;
+import com.example.lps.superplayer.fragment.AlbumPlayGridFragment;
 import com.example.lps.superplayer.model.Album;
 
 //剧集的详情页
 public class AblumDetailActivity extends BaseActivity implements View.OnClickListener {
+    private static final String TAG = "AblumDetailActivity";
     Album mAlbum;
     boolean isShowDesc;//是否显示描述信息
     int mVideoNum;
@@ -73,16 +76,21 @@ public class AblumDetailActivity extends BaseActivity implements View.OnClickLis
             mTvAlbumDesc.setText(mAlbum.getAlbumDesc());
             mTvAlbumDesc.setVisibility(View.VISIBLE);
             mAlbumDescContainer.setVisibility(View.VISIBLE);
+            mFragmentContainer.setVisibility(View.GONE);
         } else {
             mAlbumDescContainer.setVisibility(View.GONE);
             mTvAlbumDesc.setVisibility(View.GONE);
+            mFragmentContainer.setVisibility(View.VISIBLE);
         }
         Glide.with(this).load(mAlbum.getHorImgUrl()).into(mImgConver);
 
         SiteApi.onGetAlbumDetail(mAlbum, new ApiCallBack<Album>(){
             @Override
             public void onsuccess(Album data) {
-
+                Log.e(TAG, "onsuccess: " +Thread.currentThread().getName());
+                AlbumPlayGridFragment mFragment = AlbumPlayGridFragment.newInstance(data, isShowDesc, 0);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,mFragment)
+                        .commit();
             }
 
             @Override

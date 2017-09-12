@@ -1,10 +1,14 @@
 package com.example.lps.superplayer.api;
 
+import android.util.Log;
+
 import com.example.lps.superplayer.model.Album;
 import com.example.lps.superplayer.model.Channel;
 import com.example.lps.superplayer.model.Site;
 import com.example.lps.superplayer.model.souhu.SoHuAlbum;
 import com.example.lps.superplayer.model.souhu.SoHuAlbumDetail;
+import com.example.lps.superplayer.model.souhu.Video;
+import com.example.lps.superplayer.model.souhu.VideoData;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -24,6 +28,7 @@ import okhttp3.Call;
 
 
 public class SouHuSiteApi extends BaseSiteApi {
+    private static final String TAG = "SouHuSiteApi";
     private static final int SOHU_CHANNELID_MOVIE = 1; //搜狐电影频道ID
     private static final int SOHU_CHANNELID_SERIES = 2; //搜狐电视剧频道ID
     private static final int SOHU_CHANNELID_VARIETY = 7; //搜狐综艺频道ID
@@ -67,10 +72,10 @@ public class SouHuSiteApi extends BaseSiteApi {
             public void onResponse(String response, int id) {
                 Gson mGson = new Gson();
                 SoHuAlbumDetail mSoHuAlbumDetail = mGson.fromJson(response, SoHuAlbumDetail.class);
-                if (mSoHuAlbumDetail.getData()!=null){
-                    if (mSoHuAlbumDetail.getData().getLatest_video_count()>0){
+                if (mSoHuAlbumDetail.getData() != null) {
+                    if (mSoHuAlbumDetail.getData().getLatest_video_count() > 0) {
                         mAlbum.setVideoTotal(mSoHuAlbumDetail.getData().getLatest_video_count());
-                    }else {
+                    } else {
                         mAlbum.setVideoTotal(mSoHuAlbumDetail.getData().getTotal_video_count());
                     }
 
@@ -78,6 +83,40 @@ public class SouHuSiteApi extends BaseSiteApi {
                 mCallBack.onsuccess(mAlbum);
             }
         });
+    }
+
+    @Override
+    public void ongetVideo(int mPagenum, Album mAlbum, final ApiCallBack mCallBack) {
+        int pagesize = 50;
+        String url = String.format(API_ALBUM_VIDOES_FORMAT, mAlbum.getAlbumId(), mPagenum, pagesize);
+        OkHttpUtils.get()
+                .url(url)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        mCallBack.onFail(e);
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.e(TAG, "onResponse: " + response);
+                        Gson mGson = new Gson();
+                        VideoData mVideoData = mGson.fromJson(response, VideoData.class);
+                        if (mVideoData != null) {
+                            ArrayList<Video> mVideos = new ArrayList<Video>();
+                            for (Video mVideo : mVideoData.getData().getVideos()) {
+                                Video video = new Video();
+                                video.setHorHighPic(mVideo.getHorHighPic());
+                                video.setVerHighPic(mVideo.getVerHighPic());
+                                video.setVid(mVideo.getVid());
+                                video.setVideoName(mVideo.getVideoName());
+                                mVideos.add(video);
+                            }
+                            mCallBack.onsuccess(mVideos);
+                        }
+                    }
+                });
     }
 
     private void doGetChannelAlbumsByUrl(String mUrl, final ApiCallBack mCallBack) {
