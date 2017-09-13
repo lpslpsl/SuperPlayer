@@ -29,6 +29,8 @@ public class AlbumPlayGridFragment extends Fragment implements VideoItemAdapter.
     private static final String TAG = "AlbumPlayGridFragment";
     private View view;
     private CustomGridView mGridview;
+    boolean isfristPosition = true;
+    private int mcurrentPOsition;
 
     /**
      * 初始化
@@ -53,7 +55,8 @@ public class AlbumPlayGridFragment extends Fragment implements VideoItemAdapter.
     Album mAlbum;
     boolean isSHowDesc;
     int video_position;
-int pagetotal;
+    int pagetotal;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,9 +64,10 @@ int pagetotal;
             mAlbum = (Album) getArguments().getSerializable(ALBUM);
             isSHowDesc = getArguments().getBoolean(IS_SHOW_DESC);
             video_position = getArguments().getInt(VIDEO_POSITION);
+            mcurrentPOsition = video_position;
             mAdapter = new VideoItemAdapter(getActivity(), mAlbum.getVideoTotal(), this);
             mAdapter.setShowTitleContent(isSHowDesc);
-            pagetotal= (int) Math.ceil(mAlbum.getVideoTotal()/50);
+            pagetotal = (int) Math.ceil(mAlbum.getVideoTotal() / 50);
             loadData();
         }
     }
@@ -71,7 +75,7 @@ int pagetotal;
     int pagenum = 0;
 
     private void loadData() {
-        if (pagenum<=pagetotal) {
+        if (pagenum <= pagetotal) {
             pagenum++;
             SiteApi.ongetVideo(pagenum, mAlbum, new ApiCallBack<ArrayList<Video>>() {
 
@@ -89,9 +93,9 @@ int pagetotal;
 
                 }
             });
-        }else {
-            if (mGridview!=null)
-            mGridview.setHasMore(false);
+        } else {
+            if (mGridview != null)
+                mGridview.setHasMore(false);
         }
     }
 
@@ -129,8 +133,25 @@ int pagetotal;
         mAdapter = new VideoItemAdapter(getActivity(), mAlbum.getVideoTotal(), this);
     }
 
-    @Override
-    public void onVideoSelected() {
 
+    @Override
+    public void onVideoSelected(Video mVideo, int position) {
+        if (mGridview != null) {
+            mGridview.setSelection(position);
+            mGridview.setItemChecked(position, true);
+            mcurrentPOsition = position;
+
+        }
+        if (mOnPlayVideoSelectedListener!=null){
+            mOnPlayVideoSelectedListener.OnPlayVideoSelected(mVideo,position);
+        }
+    }
+    OnPlayVideoSelectedListener mOnPlayVideoSelectedListener;
+    public interface OnPlayVideoSelectedListener{
+        void OnPlayVideoSelected(Video video,int position);
+    }
+
+    public void setOnPlayVideoSelectedListener(OnPlayVideoSelectedListener mOnPlayVideoSelectedListener) {
+        this.mOnPlayVideoSelectedListener = mOnPlayVideoSelectedListener;
     }
 }

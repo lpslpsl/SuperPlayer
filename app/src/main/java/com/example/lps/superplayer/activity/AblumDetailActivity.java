@@ -19,12 +19,14 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.lps.superplayer.R;
 import com.example.lps.superplayer.api.ApiCallBack;
+import com.example.lps.superplayer.api.OnGetVideoPlayUrlListener;
 import com.example.lps.superplayer.api.SiteApi;
 import com.example.lps.superplayer.fragment.AlbumPlayGridFragment;
 import com.example.lps.superplayer.model.Album;
+import com.example.lps.superplayer.model.souhu.Video;
 
 //剧集的详情页
-public class AblumDetailActivity extends BaseActivity implements View.OnClickListener {
+public class AblumDetailActivity extends BaseActivity implements View.OnClickListener, AlbumPlayGridFragment.OnPlayVideoSelectedListener {
     private static final String TAG = "AblumDetailActivity";
     Album mAlbum;
     boolean isShowDesc;//是否显示描述信息
@@ -84,12 +86,13 @@ public class AblumDetailActivity extends BaseActivity implements View.OnClickLis
         }
         Glide.with(this).load(mAlbum.getHorImgUrl()).into(mImgConver);
 
-        SiteApi.onGetAlbumDetail(mAlbum, new ApiCallBack<Album>(){
+        SiteApi.onGetAlbumDetail(mAlbum, new ApiCallBack<Album>() {
             @Override
             public void onsuccess(Album data) {
-                Log.e(TAG, "onsuccess: " +Thread.currentThread().getName());
+                Log.e(TAG, "onsuccess: " + Thread.currentThread().getName());
                 AlbumPlayGridFragment mFragment = AlbumPlayGridFragment.newInstance(data, isShowDesc, 0);
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,mFragment)
+                mFragment.setOnPlayVideoSelectedListener(AblumDetailActivity.this);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mFragment)
                         .commit();
             }
 
@@ -164,7 +167,7 @@ public class AblumDetailActivity extends BaseActivity implements View.OnClickLis
                 return true;
             case R.id.action_favor_item:
                 if (isFavor) {
-                    isFavor=false;
+                    isFavor = false;
 //                    todo 收藏状态存储
                     invalidateOptionsMenu();
                     Toast.makeText(this, "已取消收藏", Toast.LENGTH_SHORT).show();
@@ -172,7 +175,7 @@ public class AblumDetailActivity extends BaseActivity implements View.OnClickLis
                 return true;
             case R.id.action_unfavor_item:
                 if (!isFavor) {
-                    isFavor=true;
+                    isFavor = true;
                     invalidateOptionsMenu();
                     Toast.makeText(this, "已收藏", Toast.LENGTH_SHORT).show();
                 }
@@ -184,13 +187,56 @@ public class AblumDetailActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
+        Video video=null;
+String url="";
         switch (v.getId()) {
             case R.id.bt_super:
+                video = (Video) v.getTag(R.id.key_video);
+                url= (String) v.getTag(R.id.key_video_url);
                 break;
             case R.id.bt_normal:
+                video = (Video) v.getTag(R.id.key_video);
+                url= (String) v.getTag(R.id.key_video_url);
                 break;
             case R.id.bt_high:
+                video = (Video) v.getTag(R.id.key_video);
+                url= (String) v.getTag(R.id.key_video_url);
                 break;
+
         }
+        Toast.makeText(this, ""+video.toString(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void OnPlayVideoSelected(Video video, int position) {
+        SiteApi.onGetPlayVideoUrl(mAlbum.getSite().getSiteId(), video, new OnGetVideoPlayUrlListener() {
+            @Override
+            public void onGetSuperUrl(Video video, String url) {
+                mBtSuper.setTag(R.id.key_video,video);
+                mBtSuper.setTag(R.id.key_video_url,url);
+                mBtSuper.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onGetNoramlUrl(Video video, String url) {
+                mBtNormal.setTag(R.id.key_video,video);
+                mBtNormal.setTag(R.id.key_video_url,url);
+                mBtNormal.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onGetHighUrl(Video video, String url) {
+                mBtHigh.setTag(R.id.key_video,video);
+                mBtHigh.setTag(R.id.key_video_url,url);
+                mBtHigh.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                mBtHigh.setVisibility(View.GONE);
+                mBtNormal.setVisibility(View.GONE);
+                mBtSuper.setVisibility(View.GONE);
+            }
+        });
     }
 }

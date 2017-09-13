@@ -6,6 +6,7 @@ import com.example.lps.superplayer.model.Album;
 import com.example.lps.superplayer.model.Channel;
 import com.example.lps.superplayer.model.Site;
 import com.example.lps.superplayer.model.letv.LeTvAlbum;
+import com.example.lps.superplayer.model.souhu.Video;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -77,6 +78,11 @@ public class LeTvSiteApi extends BaseSiteApi {
     @Override
     public void ongetVideo(int mPagenum, Album mAlbum, ApiCallBack mCallBack) {
 int pagesize=20;
+    }
+
+    @Override
+    public void onGetPlayVideoUrl(Video mVideo,OnGetVideoPlayUrlListener mApiCallBack) {
+
     }
 
     private void doGetChannelAlbumsByUrl(String mUrl, final ApiCallBack mCallBack) {

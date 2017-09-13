@@ -28,7 +28,9 @@ public class VideoItemAdapter extends BaseAdapter {
     private Context mContext;
     private int mTotal;
     private OnVideoSelectedListener mListener;
-boolean showTitleContent;
+    boolean showTitleContent;
+
+
     public VideoItemAdapter(Context mContext, int total, OnVideoSelectedListener mListener) {
         this.mContext = mContext;
         mTotal = total;
@@ -59,26 +61,33 @@ boolean showTitleContent;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_video, null);
-            holder=new ViewHolder(convertView);
+            holder = new ViewHolder(convertView);
             convertView.setTag(holder);
-        }else {
-            holder= (ViewHolder) convertView.getTag();
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
-        if (isShowTitleContent()){
-            if (!TextUtils.isEmpty(mVideos.get(position).getVideoName())){
+        if (isShowTitleContent()) {
+            if (!TextUtils.isEmpty(mVideos.get(position).getVideoName())) {
                 holder.mVideoItem.setText(mVideos.get(position).getVideoName());
-            }else {
-                holder.mVideoItem.setText(position+1+"");
+            } else {
+                holder.mVideoItem.setText(position + 1 + "");
             }
-        }else {
-            holder.mVideoItem.setText(position+1+"");
+        } else {
+            holder.mVideoItem.setText(position + 1 + "");
 
         }
-
+        holder.mVideoItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null) {
+                    mListener.onVideoSelected(mVideos.get(position), position);
+                }
+            }
+        });
         return convertView;
     }
 
@@ -88,7 +97,7 @@ boolean showTitleContent;
     }
 
     public interface OnVideoSelectedListener {
-        void onVideoSelected();
+        void onVideoSelected(Video mVideo, int position);
     }
 
     static class ViewHolder {

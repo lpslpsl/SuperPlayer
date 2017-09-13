@@ -5,6 +5,7 @@ import android.content.Context;
 import com.example.lps.superplayer.model.Album;
 import com.example.lps.superplayer.model.Channel;
 import com.example.lps.superplayer.model.Site;
+import com.example.lps.superplayer.model.souhu.Video;
 
 /**
  * Created by lps on 2017/8/15.
@@ -48,6 +49,17 @@ public class SiteApi {
                 break;
             case Site.SOHU:
                 new SouHuSiteApi().ongetVideo(mPagenum,mAlbum,mApiCallBack);
+                break;
+        }
+    }
+
+    public static void onGetPlayVideoUrl(int siteid,Video mVideo, OnGetVideoPlayUrlListener mApiCallBack) {
+        switch (siteid){
+            case Site.LETV:
+                new LeTvSiteApi().onGetPlayVideoUrl(mVideo,mApiCallBack);
+                break;
+            case Site.SOHU:
+                new SouHuSiteApi().onGetPlayVideoUrl(mVideo,mApiCallBack);
                 break;
         }
     }

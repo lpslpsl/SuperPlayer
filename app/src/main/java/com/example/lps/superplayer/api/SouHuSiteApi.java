@@ -1,5 +1,6 @@
 package com.example.lps.superplayer.api;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.example.lps.superplayer.model.Album;
@@ -13,8 +14,12 @@ import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import okhttp3.Call;
 
@@ -100,7 +105,6 @@ public class SouHuSiteApi extends BaseSiteApi {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        Log.e(TAG, "onResponse: " + response);
                         Gson mGson = new Gson();
                         VideoData mVideoData = mGson.fromJson(response, VideoData.class);
                         if (mVideoData != null) {
@@ -110,6 +114,7 @@ public class SouHuSiteApi extends BaseSiteApi {
                                 video.setHorHighPic(mVideo.getHorHighPic());
                                 video.setVerHighPic(mVideo.getVerHighPic());
                                 video.setVid(mVideo.getVid());
+                                video.setAid(mVideo.getAid());
                                 video.setVideoName(mVideo.getVideoName());
                                 mVideos.add(video);
                             }
@@ -117,6 +122,48 @@ public class SouHuSiteApi extends BaseSiteApi {
                         }
                     }
                 });
+    }
+
+    @Override
+    public void onGetPlayVideoUrl(final Video mVideo, final OnGetVideoPlayUrlListener mApiCallBack) {
+        String url = String.format(API_VIDEO_PLAY_URL_FORMAT, mVideo.getVid(), mVideo.getAid());
+        OkHttpUtils.get()
+                .url(url)
+                .build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                mApiCallBack.onError(e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                Log.e(TAG, "onResponse: " + response);
+                try {
+                    JSONObject result = new JSONObject(response);
+                    JSONObject mData = result.optJSONObject("data");
+                    String nor_url = mData.optString("url_nor");
+                    if (!TextUtils.isEmpty(nor_url)) {
+                        nor_url += "uid" + getUUid() + "&pt=5&prod=app&pg=1";
+                        mVideo.setNormalUrl(nor_url);
+                        mApiCallBack.onGetNoramlUrl(mVideo, nor_url);
+                    }
+                    String superurl = mData.optString("url_super");
+                    if (!TextUtils.isEmpty(superurl)) {
+                        superurl += "uid" + getUUid() + "&pt=5&prod=app&pg=1";
+                        mVideo.setSuperUrl(superurl);
+                        mApiCallBack.onGetSuperUrl(mVideo, superurl);
+                    }
+                    String highurl = mData.optString("url_high");
+                    if (!TextUtils.isEmpty(highurl)) {
+                        highurl += "uid" + getUUid() + "&pt=5&prod=app&pg=1";
+                        mVideo.setHighUrl(highurl);
+                        mApiCallBack.onGetHighUrl(mVideo, highurl);
+                    }
+                } catch (JSONException mE) {
+                    mE.printStackTrace();
+                }
+            }
+        });
     }
 
     private void doGetChannelAlbumsByUrl(String mUrl, final ApiCallBack mCallBack) {
@@ -173,5 +220,10 @@ public class SouHuSiteApi extends BaseSiteApi {
                 break;
         }
         return channelId;
+    }
+
+    public String getUUid() {
+        UUID mUUID = UUID.randomUUID();
+        return mUUID.toString().replace("-", "");
     }
 }
