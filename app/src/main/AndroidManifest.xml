@@ -3,6 +3,8 @@
           package="com.example.lps.superplayer">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:name=".App"
@@ -26,8 +28,11 @@
         </activity>
         <activity android:name=".activity.AblumDetailActivity">
         </activity>
-        <activity android:name=".activity.PlayerActivity">
+        <activity android:name=".activity.PlayerActivity"
+            android:screenOrientation="landscape"
+            >
         </activity>
+        <service android:name=".services.MediaPlayerService"/>
     </application>
 
 </manifest>
