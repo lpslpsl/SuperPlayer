@@ -26,6 +26,8 @@
         </activity>
         <activity android:name=".activity.AblumDetailActivity">
         </activity>
+        <activity android:name=".activity.PlayerActivity">
+        </activity>
     </application>
 
 </manifest>

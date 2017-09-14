@@ -187,24 +187,32 @@ public class AblumDetailActivity extends BaseActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        Video video=null;
-String url="";
+        Video video = null;
+        String url = "";
+        int type = 0;
         switch (v.getId()) {
             case R.id.bt_super:
                 video = (Video) v.getTag(R.id.key_video);
-                url= (String) v.getTag(R.id.key_video_url);
+                url = (String) v.getTag(R.id.key_video_url);
+                type = 2;
                 break;
             case R.id.bt_normal:
+                type = 0;
                 video = (Video) v.getTag(R.id.key_video);
-                url= (String) v.getTag(R.id.key_video_url);
+                url = (String) v.getTag(R.id.key_video_url);
                 break;
             case R.id.bt_high:
+                type = 1;
                 video = (Video) v.getTag(R.id.key_video);
-                url= (String) v.getTag(R.id.key_video_url);
+                url = (String) v.getTag(R.id.key_video_url);
                 break;
 
         }
-        Toast.makeText(this, ""+video.toString(), Toast.LENGTH_SHORT).show();
+        Intent mIntent = new Intent(AblumDetailActivity.this, PlayerActivity.class);
+        mIntent.putExtra(PlayerActivity.URL, url);
+        mIntent.putExtra(PlayerActivity.TYPE, type);
+        mIntent.putExtra(PlayerActivity.Video, video);
+        startActivity(mIntent);
     }
 
     @Override
@@ -212,22 +220,22 @@ String url="";
         SiteApi.onGetPlayVideoUrl(mAlbum.getSite().getSiteId(), video, new OnGetVideoPlayUrlListener() {
             @Override
             public void onGetSuperUrl(Video video, String url) {
-                mBtSuper.setTag(R.id.key_video,video);
-                mBtSuper.setTag(R.id.key_video_url,url);
+                mBtSuper.setTag(R.id.key_video, video);
+                mBtSuper.setTag(R.id.key_video_url, url);
                 mBtSuper.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onGetNoramlUrl(Video video, String url) {
-                mBtNormal.setTag(R.id.key_video,video);
-                mBtNormal.setTag(R.id.key_video_url,url);
+                mBtNormal.setTag(R.id.key_video, video);
+                mBtNormal.setTag(R.id.key_video_url, url);
                 mBtNormal.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onGetHighUrl(Video video, String url) {
-                mBtHigh.setTag(R.id.key_video,video);
-                mBtHigh.setTag(R.id.key_video_url,url);
+                mBtHigh.setTag(R.id.key_video, video);
+                mBtHigh.setTag(R.id.key_video_url, url);
                 mBtHigh.setVisibility(View.VISIBLE);
             }
 
